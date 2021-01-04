@@ -62,7 +62,7 @@
     		<div class="w3-panel w3-card container">
     			<p id="error-msg"></p>
     			<h1>Hotels Scraper</h1><br><br>
-    			<form id="input-form">
+    			<form id="input-form" >
     				<label for="city">City</label>
     				<input type="text" id="city" name="city"  required  placeholder="City..."/><br><br>
     				<span>Checkin </span>
@@ -76,5 +76,50 @@
 
 
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    	<script type="text/javascript">
+
+    	var done = false
+    	$('#submitbutton').click(function(e){
+    	    e.preventDefault();
+
+    	    console.log("submitted");
+    		$.ajax({
+    	      type: 'post',
+    	      url: '/',
+    		  data: {
+    			city: $('#city').val(),
+    			checkin: $('#checkin').val(),
+    			checkout: $('#checkout').val()
+    		  },
+    	       success: function (response) {
+    			   if ("error" in response) {
+    				   document.getElementById("error-msg").innerHTML= response['error']
+    				   document.getElementById("error-msg").style.color = "red"
+    				   document.getElementById("error-msg").style.display = "block"
+    			   } else {
+    				   done = true
+    				   document.getElementById("error-msg").style.display = "none"
+    				   console.log(response);
+    				   window.location = '/scrape'
+    			   }
+
+    	       		// document.getElementById("pb").innerHTML= q;
+    	       }
+          });
+
+
+    	});
+
+    	if (done) {
+    		alert('Done')
+    		document.getElementById("submitbutton").value = "Get Hotels"
+    	}
+
+    		// document.getElementById("submitbutton").addEventListener('click', function() {
+    		// 	alert("H");
+    		// 	document.getElementById("submitbutton").value = "Please wait..."
+    		//
+    		// })
+    	</script>
     </body>
 </html>
