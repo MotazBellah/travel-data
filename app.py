@@ -28,6 +28,8 @@ output_data = []
 desCity = ''
 checkinDate = ''
 checkoutDate = ''
+room = 1
+traveler = 1
 
 @app.route('/')
 def index():
@@ -40,6 +42,8 @@ def submit():
         city = request.form['city'] # Getting the Input Amazon Product URL
         checkin = request.form['checkin']
         checkout = request.form['checkout']
+        noOfRoom = request.form['room']
+        noOfTraverlers = request.form['traveler']
 
         print("########3")
         print(city)
@@ -48,10 +52,14 @@ def submit():
         global desCity
         global checkinDate
         global checkoutDate
+        global room
+        global traveler
 
         desCity = city
         checkinDate = checkin
         checkoutDate = checkout
+        room = noOfRoom
+        traveler = noOfTraverlers
 
         d1 = datetime.datetime.strptime(checkin, "%Y-%m-%d").date()
         d2 = datetime.datetime.strptime(checkout, "%Y-%m-%d").date()
@@ -73,7 +81,7 @@ def scrape():
     output_data = []
 
     try:
-        scrape_with_crochet(desCity=desCity, checkinDate=checkinDate, checkoutDate=checkoutDate) # Passing that URL to our Scraping Function
+        scrape_with_crochet(desCity=desCity, checkinDate=checkinDate, checkoutDate=checkoutDate, room=room, traveler=traveler) # Passing that URL to our Scraping Function
         print(output_data)
     except Exception as e:
         pass
@@ -81,14 +89,14 @@ def scrape():
     return excel.make_response_from_records(output_data, "xls", file_name="hotelsdata")
 
 @crochet.wait_for(timeout=800)
-def scrape_with_crochet(desCity, checkinDate, checkoutDate):
+def scrape_with_crochet(desCity, checkinDate, checkoutDate, room, traveler):
     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$")
     # This will connect to the dispatcher that will kind of loop the code between these two functions.
     dispatcher.connect(_crawler_result, signal=signals.item_scraped)
 
     try:
         # This will connect to the BookingSpider function in our scrapy file and after each yield will pass to the crawler_result function.
-        eventual = crawl_runner.crawl(BookingSpider, city=desCity, checkin=checkinDate, checkout=checkoutDate)
+        eventual = crawl_runner.crawl(BookingSpider, city=desCity, checkin=checkinDate, checkout=checkoutDate, room=room, traveler=traveler)
         # eventual = crawl_runner.crawl(BedsSpider, city=desCity, checkin=checkinDate, checkout=checkoutDate)
         print('%%%%%%%%%%%%%%%%')
         print(eventual)
