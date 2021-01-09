@@ -15,6 +15,7 @@ SPIDER_MODULES = ['travelData.spiders']
 NEWSPIDER_MODULE = 'travelData.spiders'
 
 HTTPERROR_ALLOW_ALL = True
+RETRY_HTTP_CODES = [429]
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'travelData (+http://www.yourdomain.com)'
 
@@ -33,7 +34,7 @@ DOWNLOAD_DELAY = 5
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = True
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -55,6 +56,10 @@ DOWNLOAD_DELAY = 5
 #DOWNLOADER_MIDDLEWARES = {
 #    'travelData.middlewares.TraveldataDownloaderMiddleware': 543,
 #}
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+    'flat.middlewares.TooManyRequestsRetryMiddleware': 543,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
