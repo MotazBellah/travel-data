@@ -8,8 +8,8 @@ class BookingSpider(scrapy.Spider):
     header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36',}
 
     def start_requests(self):
-        yield scrapy.Request(url='''https://www.booking.com/searchresults.html?label=gen173nr-1FCAQoggJCDGNpdHlfLTI5MDI2M0gBWARoQ4gBAZgBAbgBF8gBDNgBAegBAfgBAogCAagCA7gCx_7q_AXAAgHSAiQ3ZjNmMWU3My0wOTZhLTQ5YjMtOGE0Zi1kZGU2OTAyM2JiMWXYAgXgAgE;sid=12a8b409f259b2760cdf245b9e549b54;tmpl=searchresults;checkin_year_month_monthday={1};checkout_year_month_monthday={2};class_interval=1;dest_type=city;group_adults={4};group_children=0;label_click=undef;no_rooms={3};offset=0;raw_dest_type=city;sb_price_type=total;shw_aparth=1;slp_r_match=0;srpvid=90a28466542d013c;ss={0};ss_all=0;ssb=empty;sshis=0;top_ufis=1&;selected_currency=USD'''.format(self.city, self.checkin, self.checkout, self.room, self.traveler),
-        callback=self.parse_booking, headers=self.header)
+        # yield scrapy.Request(url='''https://www.booking.com/searchresults.html?label=gen173nr-1FCAQoggJCDGNpdHlfLTI5MDI2M0gBWARoQ4gBAZgBAbgBF8gBDNgBAegBAfgBAogCAagCA7gCx_7q_AXAAgHSAiQ3ZjNmMWU3My0wOTZhLTQ5YjMtOGE0Zi1kZGU2OTAyM2JiMWXYAgXgAgE;sid=12a8b409f259b2760cdf245b9e549b54;tmpl=searchresults;checkin_year_month_monthday={1};checkout_year_month_monthday={2};class_interval=1;dest_type=city;group_adults={4};group_children=0;label_click=undef;no_rooms={3};offset=0;raw_dest_type=city;sb_price_type=total;shw_aparth=1;slp_r_match=0;srpvid=90a28466542d013c;ss={0};ss_all=0;ssb=empty;sshis=0;top_ufis=1&;selected_currency=USD'''.format(self.city, self.checkin, self.checkout, self.room, self.traveler),
+        # callback=self.parse_booking, headers=self.header)
 
 
         yield scrapy.Request(url='''https://www.expedia.com/Hotel-Search?adults={4}%2C1&d1={1}&d2={2}&destination={0}&endDate={2}&rooms={3}&semdtl=&sort=RECOMMENDED&startDate={1}&theme=&useRewards=false&userIntent'''.format(self.city, self.checkin, self.checkout, self.room, self.traveler),
