@@ -24,26 +24,26 @@ ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
-
+PROXY_POOL_ENABLED = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 10
-# The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN = 16
-CONCURRENT_REQUESTS_PER_IP = 16
+# DOWNLOAD_DELAY = 10
+# # The download delay setting will honor only one of:
+# CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = True
 
-ROTATING_PROXY_LIST = [
-    '68.183.221.156:33931',
-    '192.109.165.221:80',
-    '191.101.39.170:80',
-    '192.109.165.41:3128',
-    '185.198.188.55:8080',
-    '185.150.189.220:80',
-]
+# ROTATING_PROXY_LIST = [
+#     '68.183.221.156:33931',
+#     '192.109.165.221:80',
+#     '191.101.39.170:80',
+#     '192.109.165.41:3128',
+#     '185.198.188.55:8080',
+#     '185.150.189.220:80',
+# ]
 
 
 # Disable Telnet Console (enabled by default)
@@ -68,8 +68,8 @@ ROTATING_PROXY_LIST = [
 #}
 DOWNLOADER_MIDDLEWARES = {
     # ...
-    'rotating_proxies.middlewares.RotatingProxyMiddleware': 800,
-    'rotating_proxies.middlewares.BanDetectionMiddleware': 800,
+    'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
+    'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
     # ...
 }
 
