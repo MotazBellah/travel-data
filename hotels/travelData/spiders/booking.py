@@ -35,6 +35,7 @@ class BookingSpider(scrapy.Spider):
                 "rating": str(rating) + str(total_rating),
                 "price": price,
                 "location": location,
+                "link": "https://www.expedia.com"+link,
             }
 
     def parse_booking(self, response):
@@ -50,10 +51,14 @@ class BookingSpider(scrapy.Spider):
 # //div[@id='hotellist_inner']/div/div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div/div/text()
             room = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div/div/text())").get()
             # div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div[2]/div/div[@class='bui-price-display__value prco-inline-block-maker-helper ']/text()
+            if not room:
+                room = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/div/div/div[@class='roomPrice roomPrice_flex  sr_discount ']/div/div[1]/div[@class='bui-price-display__label prco-inline-block-maker-helper']/text())").get()
             yy = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div[2]/div/div[@class='bui-price-display__value prco-inline-block-maker-helper ']/text())").get()
+            if not yy:
+                yy = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/div/div/div[@class='roomPrice roomPrice_flex  sr_discount ']/div/div[2]/div/div/text())").get()
             try:
                 # pass
-                yield response.follow(url=link, callback=self.parse_hotel, meta={'title': title, 'rating': rating, 'img': img, 'y': yy, 'room': room})
+                yield response.follow(url=link, callback=self.parse_hotel, meta={'title': title, 'rating': rating, 'img': img, 'y': yy, 'room': room, "link":link})
             except Exception as e:
                 yield {
                     "source": 'Booking',
@@ -61,6 +66,7 @@ class BookingSpider(scrapy.Spider):
                     "rating": rating,
                     "price": str(yy.replace('\xa0', ' ')) + ' - ' + str(room),
                     'location':'N/A',
+                    "link": 'N/A'
                 }
 
 
@@ -70,17 +76,10 @@ class BookingSpider(scrapy.Spider):
         rating = response.request.meta['rating']
         yy = response.request.meta['y']
         room = response.request.meta['room']
+        link = response.request.meta['link']
 
 
         z = response.xpath("normalize-space(//p[@id='showMap2']/span/text())").get()
-
-
-
-        # More info
-        # x = response.xpath("//div[@id='property_description_content']/p")
-        # t = ""
-        # for i in x:
-        #     t += i.xpath(".//text()").get()
 
         yield {
             "source": 'Booking',
@@ -88,4 +87,5 @@ class BookingSpider(scrapy.Spider):
             "rating": rating,
             "price": str(yy.replace('\xa0', ' ')) + ' - ' + str(room),
             'location':z,
+            "link": "https://www.booking.com"+link,
         }
