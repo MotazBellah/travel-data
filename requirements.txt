@@ -18,3 +18,4 @@ Flask-Executor==0.9.4
 celery==4.4.7
 redis==3.3.10
 scrapy-selenium==0.0.7
+scrapy-rotating-proxies==0.6.2

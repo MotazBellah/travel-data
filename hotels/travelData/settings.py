@@ -36,6 +36,16 @@ DOWNLOAD_DELAY = 5
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = True
 
+ROTATING_PROXY_LIST = [
+    '68.183.221.156:33931',
+    '192.109.165.221:80',
+    '191.101.39.170:80',
+    '192.109.165.41:3128',
+    '185.198.188.55:8080',
+    '185.150.189.220:80',
+]
+
+
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
 
@@ -57,8 +67,10 @@ DOWNLOAD_DELAY = 5
 #    'travelData.middlewares.TraveldataDownloaderMiddleware': 543,
 #}
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    'flat.middlewares.TooManyRequestsRetryMiddleware': 543,
+    # ...
+    'rotating_proxies.middlewares.RotatingProxyMiddleware': 800,
+    'rotating_proxies.middlewares.BanDetectionMiddleware': 800,
+    # ...
 }
 
 # Enable or disable extensions
