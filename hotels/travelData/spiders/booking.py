@@ -13,7 +13,7 @@ class BookingSpider(scrapy.Spider):
 
 
         yield scrapy.Request(url='''https://www.expedia.com/Hotel-Search?adults={4}%2C1&d1={1}&d2={2}&destination={0}&endDate={2}&rooms={3}&semdtl=&sort=RECOMMENDED&startDate={1}&theme=&useRewards=false&userIntent'''.format(self.city, self.checkin, self.checkout, self.room, self.traveler),
-        callback=self.parse_expedia, headers=self.header)
+        callback=self.parse_expedia)
 
 
     def parse_expedia(self, response):
