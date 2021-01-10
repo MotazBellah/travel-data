@@ -51,16 +51,18 @@ class BookingSpider(scrapy.Spider):
 # //div[@id='hotellist_inner']/div/div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div/div/text()
             room = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div/div/text())").get()
             # div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div[2]/div/div[@class='bui-price-display__value prco-inline-block-maker-helper ']/text()
-            print("////////////////////////")
+            print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             print(room)
             # if not room:
             room2 = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/div/div/div[@class='roomPrice roomPrice_flex  sr_discount ']/div/div[1]/div[@class='bui-price-display__label prco-inline-block-maker-helper']/text())").get()
+            print(room2)
             yy = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/table/tbody/tr/td[3]/div/div[2]/div/div[@class='bui-price-display__value prco-inline-block-maker-helper ']/text())").get()
             # if not yy:
             yy2 = hotel.xpath("normalize-space(.//div[@class='sr_item_content sr_item_content_slider_wrapper ']/div[@class='sr_rooms_table_block clearfix sr_card_rooms_container']/div/div/div/div/div[@class='roomPrice roomPrice_flex  sr_discount ']/div/div[2]/div/div/text())").get()
+            print(yy)
             try:
                 # pass
-                yield response.follow(url=link, callback=self.parse_hotel, meta={'title': title, 'rating': rating, 'img': img, 'y': yy, 'room': room, "link":link})
+                yield response.follow(url=link, callback=self.parse_hotel, meta={'title': title, 'rating': rating, 'img': img, 'y': yy+yy2, 'room': room+room2, "link":link})
             except Exception as e:
                 yield {
                     "source": 'Booking',
