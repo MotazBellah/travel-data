@@ -33,7 +33,7 @@ class BookingSpider(scrapy.Spider):
                 "source": 'Expedia',
                 'name': name,
                 "rating": str(rating) + str(total_rating),
-                "price": price.split(',')[1],
+                "price": price.split(',')[0],
                 "location": location,
                 "link": "https://www.expedia.com"+link,
             }
