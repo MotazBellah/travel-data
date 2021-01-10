@@ -14,7 +14,6 @@ import datetime
 
 sys.path.insert(0, './hotels/travelData/spiders')
 
-# print(sys.path)
 from booking import BookingSpider
 
 app = Flask(__name__)
@@ -39,22 +38,19 @@ def index():
 @app.route('/', methods=['POST'])
 def submit():
     if request.method == 'POST':
-        city = request.form['city'] # Getting the Input Amazon Product URL
+        # Getting the user input, city, checkin,...
+        city = request.form['city']
         checkin = request.form['checkin']
         checkout = request.form['checkout']
         noOfRoom = request.form['room']
         noOfTraverlers = request.form['traveler']
 
-        print("########3")
-        print(city)
-        print(checkin)
-        print(checkout)
         global desCity
         global checkinDate
         global checkoutDate
         global room
         global traveler
-
+        # Assign the user input to the global variable, to be used in scray function
         desCity = city
         checkinDate = checkin
         checkoutDate = checkout
@@ -63,7 +59,7 @@ def submit():
 
         d1 = datetime.datetime.strptime(checkin, "%Y-%m-%d").date()
         d2 = datetime.datetime.strptime(checkout, "%Y-%m-%d").date()
-
+        # Validate the checkin and checkout date
         if ((d1 > d2)):
             return jsonify({"error": "Please check the date"})
 
@@ -71,35 +67,31 @@ def submit():
             return jsonify({"cool": "Please fill all the fields"})
         else:
             return jsonify({"error": "Please fill all the fields"})
-        # return redirect(url_for('scrape')) # Passing to the Scrape function
 
 
 @app.route("/scrape")
 def scrape():
-
+    # Get the output_data and reset it
     global output_data
     output_data = []
 
     try:
-        scrape_with_crochet(desCity=desCity, checkinDate=checkinDate, checkoutDate=checkoutDate, room=room, traveler=traveler) # Passing that URL to our Scraping Function
-        print(output_data)
+        # Passing the user input to our Scraping Function
+        scrape_with_crochet(desCity=desCity, checkinDate=checkinDate, checkoutDate=checkoutDate, room=room, traveler=traveler)
     except Exception as e:
         pass
-
+    # Downlpad excel file with scrapped data
     return excel.make_response_from_records(output_data, "xls", file_name="hotelsdata")
+
 
 @crochet.wait_for(timeout=800)
 def scrape_with_crochet(desCity, checkinDate, checkoutDate, room, traveler):
-    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$")
     # This will connect to the dispatcher that will kind of loop the code between these two functions.
     dispatcher.connect(_crawler_result, signal=signals.item_scraped)
 
     try:
         # This will connect to the BookingSpider function in our scrapy file and after each yield will pass to the crawler_result function.
         eventual = crawl_runner.crawl(BookingSpider, city=desCity, checkin=checkinDate, checkout=checkoutDate, room=room, traveler=traveler)
-        # eventual = crawl_runner.crawl(BedsSpider, city=desCity, checkin=checkinDate, checkout=checkoutDate)
-        print('%%%%%%%%%%%%%%%%')
-        print(eventual)
         return eventual
     except Exception as e:
         print(e)
@@ -107,8 +99,6 @@ def scrape_with_crochet(desCity, checkinDate, checkoutDate, room, traveler):
 
 #This will append the data to the output data list.
 def _crawler_result(item, response, spider):
-    print('///////////////////////')
-    print(response)
     output_data.append(dict(item))
 
 
