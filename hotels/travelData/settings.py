@@ -15,7 +15,6 @@ SPIDER_MODULES = ['travelData.spiders']
 NEWSPIDER_MODULE = 'travelData.spiders'
 
 HTTPERROR_ALLOW_ALL = True
-RETRY_HTTP_CODES = [429]
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'travelData (+http://www.yourdomain.com)'
 
@@ -23,28 +22,18 @@ RETRY_HTTP_CODES = [429]
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 32
-# PROXY_POOL_ENABLED = True
+#CONCURRENT_REQUESTS = 32
+
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 6
-# # The download delay setting will honor only one of:
-# CONCURRENT_REQUESTS_PER_DOMAIN = 16
-# CONCURRENT_REQUESTS_PER_IP = 16
+#DOWNLOAD_DELAY = 3
+# The download delay setting will honor only one of:
+#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+#CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = True
-
-# ROTATING_PROXY_LIST = [
-#     '68.183.221.156:33931',
-#     '192.109.165.221:80',
-#     '191.101.39.170:80',
-#     '192.109.165.41:3128',
-#     '185.198.188.55:8080',
-#     '185.150.189.220:80',
-# ]
-
+#COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -67,17 +56,11 @@ DOWNLOAD_DELAY = 6
 #    'travelData.middlewares.TraveldataDownloaderMiddleware': 543,
 #}
 
-
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
-
-DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    'flat.middlewares.TooManyRequestsRetryMiddleware': 543,
-}
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
